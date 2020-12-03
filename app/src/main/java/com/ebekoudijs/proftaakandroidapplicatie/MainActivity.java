@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 User user = new User(EditTextusername.toString(), EditTextpassword.toString(), EditTextphoneNumber.toString());
 
                 try {
-                    URL url = new URL("145.93.128.64:51273/weatherforecast/post");
+                    URL url = new URL("http://localhost:51273/weatherforecast/post");
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("POST");
                     conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
@@ -72,5 +72,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    int pieter =1;
 }
