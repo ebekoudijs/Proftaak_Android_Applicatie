@@ -12,23 +12,30 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class Login extends AppCompatActivity {
+    private static final String TAG = "Login";
+
+    public String ipAddress(String address) {
+        return "145.93.128.139:5000/aapie/" + address;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Button toCreateAccount = findViewById(R.id.buttonToCreateAccount);
-        Button login = findViewById(R.id.buttonLogin);
+        Button ToCreateAccount = findViewById(R.id.buttonToCreateAccount);
+        Button Login = findViewById(R.id.buttonLogin);
         EditText EditTextLoginUser = findViewById(R.id.editTextLoginUsername);
         EditText EditTextLoginPass = findViewById(R.id.editTextLoginPassword);
 
-        toCreateAccount.setOnClickListener(new View.OnClickListener() {
+        ToCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Login.this, MainActivity.class);
@@ -36,12 +43,12 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        login.setOnClickListener(new View.OnClickListener() {
+        Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserLogin user = new UserLogin(EditTextLoginUser.getText().toString(), EditTextLoginPass.getText().toString());
+                User user = new User(EditTextLoginUser.getText().toString(), EditTextLoginPass.getText().toString(), null);
 
-                TaskRunner.executeAsync(() -> createUser(user), (result)-> {
+                TaskRunner.executeAsync(() -> loginUser(user), (result)-> {
                     if (result.isPresent() && result.get()){
                         Toast.makeText(getApplicationContext(), "Credentials sent successfully.", Toast.LENGTH_LONG).show();
                     }
@@ -52,13 +59,11 @@ public class Login extends AppCompatActivity {
                 });
             }
         });
-
     }
 
-
-    private boolean createUser(UserLogin user){
+    private boolean loginUser(User user){
         try {
-            URL url = new URL("http://212.127.230.61:5000/aapie/post");
+            URL url = new URL(ipAddress("login"));
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
@@ -77,15 +82,35 @@ public class Login extends AppCompatActivity {
 
             os.flush();
             os.close();
+          
 
 
-
-            Log.i("STATUS", String.valueOf(conn.getResponseCode()));
+            Log.i("STATUS" , String.valueOf(conn.getResponseCode()));
             Log.i("MSG" , conn.getResponseMessage());
+
+            String readLine = null;
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(conn.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            while((readLine = in .readLine()) !=null){
+                response.append(readLine);
+            } in .close();
+            Log.d(TAG, "loginUser: " + response.toString());
+
+            if (response.toString().isEmpty()) {
+                Intent i = new Intent(Login.this, Order.class);
+                startActivity(i);
+            }
+
+            else {
+                Toast.makeText(getApplicationContext(), "Inloggen mislukt :(", Toast.LENGTH_LONG).show();
+            }
 
             conn.disconnect();
             return(true);
+
         } catch (Exception e) {
+            Log.e(TAG, "loginUser: ", e);
             e.printStackTrace();
             return(false);
         }
