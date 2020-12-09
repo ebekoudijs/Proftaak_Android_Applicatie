@@ -2,62 +2,44 @@ package com.ebekoudijs.proftaakandroidapplicatie;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-
 import android.content.Intent;
-
-import android.annotation.SuppressLint;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
-import android.widget.TextView;
-
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-
 import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import org.json.JSONObject;
-import org.w3c.dom.Text;
-
-import java.io.DataOutputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
-import java.nio.charset.StandardCharsets;
-
-
-public class MainActivity extends AppCompatActivity {
+public class Login extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
+        Button toCreateAccount = findViewById(R.id.buttonToCreateAccount);
+        Button login = findViewById(R.id.buttonLogin);
+        EditText EditTextLoginUser = findViewById(R.id.editTextLoginUsername);
+        EditText EditTextLoginPass = findViewById(R.id.editTextLoginPassword);
 
-
-        EditText EditTextusername = findViewById(R.id.editTextUsername);
-        EditText EditTextpassword = findViewById(R.id.editTextPassword);
-        EditText EditTextphoneNumber = findViewById(R.id.editTextPhoneNumber);
-        Button submit = findViewById(R.id.buttonCreate);
-
-        Button toLogin = findViewById(R.id.buttonToLogin);
-
-
-        submit.setOnClickListener(new View.OnClickListener() {
+        toCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent i = new Intent(Login.this, MainActivity.class);
+                startActivity(i);
+            }
+        });
 
-
-                User user = new User(EditTextusername.getText().toString(), EditTextpassword.getText().toString(), EditTextphoneNumber.getText().toString());
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UserLogin user = new UserLogin(EditTextLoginUser.getText().toString(), EditTextLoginPass.getText().toString());
 
                 TaskRunner.executeAsync(() -> createUser(user), (result)-> {
                     if (result.isPresent() && result.get()){
@@ -68,21 +50,13 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 });
-
             }
         });
 
-        toLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, Login.class);
-                startActivity(i);
-
-            }
-        });
     }
 
-    private boolean createUser(User user){
+
+    private boolean createUser(UserLogin user){
         try {
             URL url = new URL("http://212.127.230.61:5000/aapie/post");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
