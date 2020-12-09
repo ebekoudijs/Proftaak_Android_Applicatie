@@ -3,9 +3,6 @@
     package="com.ebekoudijs.proftaakandroidapplicatie">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
-
-
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -16,10 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProftaakAndroidApplicatie">
-        <activity android:name=".Login"></activity>
-
-
-
+        <activity android:name=".Order"></activity>
+        <activity android:name=".Login" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
