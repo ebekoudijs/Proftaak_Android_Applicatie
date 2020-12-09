@@ -25,26 +25,17 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        EditText EditTextUsername = findViewById(R.id.editTextUsername);
-        EditText EditTextPassword = findViewById(R.id.editTextPassword);
-        EditText EditTextPhoneNumber = findViewById(R.id.editTextPhoneNumber);
-        Button Submit = findViewById(R.id.buttonCreate);
-        Button ToLogin = findViewById(R.id.buttonToLogin);
-        Button ToOrder = findViewById(R.id.buttonToOrder);
+        EditText EditTextusername = findViewById(R.id.editTextUsername);
+        EditText EditTextpassword = findViewById(R.id.editTextPassword);
+        EditText EditTextphoneNumber = findViewById(R.id.editTextPhoneNumber);
+        Button submit = findViewById(R.id.buttonCreate);
+        Button toLogin = findViewById(R.id.buttonToLogin);
 
-        ToOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, Order.class);
-                startActivity(i);
-            }
-        });
-
-        Submit.setOnClickListener(new View.OnClickListener() {
+        submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                User user = new User(EditTextUsername.getText().toString(), EditTextPassword.getText().toString(), EditTextPhoneNumber.getText().toString());
+                User user = new User(EditTextusername.getText().toString(), EditTextpassword.getText().toString(), EditTextphoneNumber.getText().toString());
 
                 TaskRunner.executeAsync(() -> createUser(user), (result)-> {
                     if (result.isPresent() && result.get()){
@@ -59,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ToLogin.setOnClickListener(new View.OnClickListener() {
+        toLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, Login.class);

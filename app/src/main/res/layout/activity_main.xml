@@ -70,15 +70,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonCreate" />
 
-    <Button
-        android:id="@+id/buttonToOrder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="To order (tijdelijk)"
-        app:layout_constraintBottom_toTopOf="@+id/buttonToLogin"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonCreate" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
