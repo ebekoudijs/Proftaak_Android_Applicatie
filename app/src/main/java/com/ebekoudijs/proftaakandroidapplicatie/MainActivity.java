@@ -2,19 +2,38 @@ package com.ebekoudijs.proftaakandroidapplicatie;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import android.content.Intent;
+
+import android.annotation.SuppressLint;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import android.widget.TextView;
+
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+
 import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import org.json.JSONObject;
+import org.w3c.dom.Text;
+
+import java.io.DataOutputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,11 +48,14 @@ public class MainActivity extends AppCompatActivity {
         EditText EditTextpassword = findViewById(R.id.editTextPassword);
         EditText EditTextphoneNumber = findViewById(R.id.editTextPhoneNumber);
         Button submit = findViewById(R.id.buttonCreate);
+
         Button toLogin = findViewById(R.id.buttonToLogin);
+
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
 
                 User user = new User(EditTextusername.getText().toString(), EditTextpassword.getText().toString(), EditTextphoneNumber.getText().toString());
 
@@ -55,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, Login.class);
                 startActivity(i);
+
             }
         });
     }
