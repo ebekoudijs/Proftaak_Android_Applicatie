@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.ebekoudijs.proftaakandroidapplicatie.services.IUserService;
+import com.ebekoudijs.proftaakandroidapplicatie.services.UserService;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -22,8 +24,9 @@ public class Login extends AppCompatActivity {
     private static final String TAG = "Login";
 
     public String ipAddress(String address) {
-        return "145.93.128.139:5000/aapie/" + address;
+        return "145.93.128.113:5000/aapie/" + address;
     }
+    IUserService userService = new UserService();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +35,18 @@ public class Login extends AppCompatActivity {
 
         Button ToCreateAccount = findViewById(R.id.buttonToCreateAccount);
         Button Login = findViewById(R.id.buttonLogin);
+        Button ToOrder = findViewById(R.id.buttonToOrder);
         EditText EditTextLoginUser = findViewById(R.id.editTextLoginUsername);
         EditText EditTextLoginPass = findViewById(R.id.editTextLoginPassword);
+
+
+        ToOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Login.this, Order.class);
+                startActivity(i);
+            }
+        });
 
         ToCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,71 +61,23 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                 User user = new User(EditTextLoginUser.getText().toString(), EditTextLoginPass.getText().toString(), null);
 
-                TaskRunner.executeAsync(() -> loginUser(user), (result)-> {
-                    if (result.isPresent() && result.get()){
-                        Toast.makeText(getApplicationContext(), "Credentials sent successfully.", Toast.LENGTH_LONG).show();
+                TaskRunner.executeAsync(() -> userService.getUser(user.Username, user.Password), (result)-> {
+                    if (result.isPresent()){
+                        Toast.makeText(getApplicationContext(), "Credentials sent successfully!", Toast.LENGTH_LONG).show();
+                        Intent i = new Intent(Login.this, Order.class);
+                        startActivity(i);
                     }
                     else {
                         Toast.makeText(getApplicationContext(), "Credentials NOT sent successfully!", Toast.LENGTH_LONG).show();
                     }
 
+
                 });
+
             }
         });
+
     }
 
-    private boolean loginUser(User user){
-        try {
-            URL url = new URL(ipAddress("login"));
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-            conn.setRequestProperty("Accept","application/json");
-            conn.setDoOutput(true);
-            conn.setDoInput(true);
-            conn.setConnectTimeout(10000);
 
-            Gson gson = new Gson();
-            String json = gson.toJson(user);
-
-            Log.i("JSON", json);
-            DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-            //os.writeBytes(URLEncoder.encode(jsonParam.toString(), "UTF-8"));
-            os.writeBytes(json);
-
-            os.flush();
-            os.close();
-          
-
-
-            Log.i("STATUS" , String.valueOf(conn.getResponseCode()));
-            Log.i("MSG" , conn.getResponseMessage());
-
-            String readLine = null;
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(conn.getInputStream()));
-            StringBuilder response = new StringBuilder();
-            while((readLine = in .readLine()) !=null){
-                response.append(readLine);
-            } in .close();
-            Log.d(TAG, "loginUser: " + response.toString());
-
-            if (response.toString().isEmpty()) {
-                Intent i = new Intent(Login.this, Order.class);
-                startActivity(i);
-            }
-
-            else {
-                Toast.makeText(getApplicationContext(), "Inloggen mislukt :(", Toast.LENGTH_LONG).show();
-            }
-
-            conn.disconnect();
-            return(true);
-
-        } catch (Exception e) {
-            Log.e(TAG, "loginUser: ", e);
-            e.printStackTrace();
-            return(false);
-        }
-    }
 }
