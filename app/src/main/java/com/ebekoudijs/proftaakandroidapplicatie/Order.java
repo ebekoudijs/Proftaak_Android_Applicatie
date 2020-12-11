@@ -1,14 +1,10 @@
 package com.ebekoudijs.proftaakandroidapplicatie;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.Toast;
 
 public class Order extends AppCompatActivity {
 
@@ -17,6 +13,11 @@ public class Order extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
 
+        RecyclerView RecyclerDrinks = findViewById(R.id.RecyclerDrinks);
+
+        RecyclerDrinks.setAdapter(new RecyclerViewAdapter());
+        RecyclerDrinks.setLayoutManager(new LinearLayoutManager(this));
 
     }
+
 }
