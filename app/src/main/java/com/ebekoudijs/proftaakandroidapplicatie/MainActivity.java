@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.ebekoudijs.proftaakandroidapplicatie.services.IUserService;
+import com.ebekoudijs.proftaakandroidapplicatie.services.UserService;
 import com.google.gson.Gson;
 
 import java.io.DataOutputStream;
@@ -22,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        IUserService userService = new UserService();
 
 
         EditText EditTextusername = findViewById(R.id.editTextUsername);
@@ -37,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
                 User user = new User(EditTextusername.getText().toString(), EditTextpassword.getText().toString(), EditTextphoneNumber.getText().toString());
 
-                TaskRunner.executeAsync(() -> createUser(user), (result)-> {
-                    if (result.isPresent() && result.get()){
+                TaskRunner.executeAsync(() -> userService.createUser(user), (result)-> {
+                    if (result.isPresent()){
                         Toast.makeText(getApplicationContext(), "Credentials sent successfully.", Toast.LENGTH_LONG).show();
                     }
                     else {
@@ -59,38 +61,4 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private boolean createUser(User user){
-        try {
-            URL url = new URL("http://212.127.230.61:5000/aapie/post");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-            conn.setRequestProperty("Accept","application/json");
-            conn.setDoOutput(true);
-            conn.setDoInput(true);
-            conn.setConnectTimeout(10000);
-
-            Gson gson = new Gson();
-            String json = gson.toJson(user);
-
-            Log.i("JSON", json);
-            DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-            //os.writeBytes(URLEncoder.encode(jsonParam.toString(), "UTF-8"));
-            os.writeBytes(json);
-
-            os.flush();
-            os.close();
-
-
-
-            Log.i("STATUS", String.valueOf(conn.getResponseCode()));
-            Log.i("MSG" , conn.getResponseMessage());
-
-            conn.disconnect();
-            return(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return(false);
-        }
-    }
 }
