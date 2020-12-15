@@ -68,7 +68,7 @@ public class Login extends AppCompatActivity {
                         startActivity(i);
                     }
                     else {
-                        Toast.makeText(getApplicationContext(), "Credentials NOT sent successfully!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Login NOT successful!", Toast.LENGTH_LONG).show();
                     }
 
 
