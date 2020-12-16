@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -68,6 +69,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         private final Button buttonPlus, buttonMin;
         private final TextView textViewDrinkAmount;
         private int drinkAmount = 0;
+        public static String fullOrder;
 
         public ViewHolder(View view) {
             super(view);
@@ -76,6 +78,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             buttonPlus = view.findViewById(R.id.buttonPlus);
             buttonMin = view.findViewById(R.id.buttonMinus);
             textViewDrinkAmount = view.findViewById(R.id.textViewDrinkAmount);
+            fullOrder = textViewDrinkAmount.toString() + " " + textView.toString();
         }
 
         public TextView getTextView() {

@@ -34,9 +34,7 @@ public class Order extends AppCompatActivity {
                 //Intent i = new Intent(Login.this, Order.class);
                 //startActivity(i);
             }
-            else {
-
-            }
+            Toast.makeText(getApplicationContext(), RecyclerViewAdapter.ViewHolder.fullOrder, Toast.LENGTH_LONG);
 
         });
     }
