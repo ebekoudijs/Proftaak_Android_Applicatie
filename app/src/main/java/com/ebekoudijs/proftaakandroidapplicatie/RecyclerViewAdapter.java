@@ -14,10 +14,11 @@ import java.util.List;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
 
     private List<Product> products;
-
+    public ViewHolder[] viewHolders;
 
     public RecyclerViewAdapter(List<Product> products) {
         this.products = products;
+        viewHolders = new ViewHolder[products.size()];
     }
 
     // Create new views (invoked by the layout manager)
@@ -33,7 +34,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-
+        viewHolders[position] = viewHolder;
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
         viewHolder.getTextView().setText(products.get(position).name);
@@ -69,7 +70,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         private final Button buttonPlus, buttonMin;
         private final TextView textViewDrinkAmount;
         private int drinkAmount = 0;
-        public static String fullOrder;
+        public String fullOrder;
 
         public ViewHolder(View view) {
             super(view);
@@ -78,11 +79,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             buttonPlus = view.findViewById(R.id.buttonPlus);
             buttonMin = view.findViewById(R.id.buttonMinus);
             textViewDrinkAmount = view.findViewById(R.id.textViewDrinkAmount);
-            fullOrder = textViewDrinkAmount.toString() + " " + textView.toString();
+
         }
 
         public TextView getTextView() {
             return textView;
+        }
+
+        public String getFullOrder (){
+            return textView.getText() + " " + textViewDrinkAmount.getText();
         }
     }
 }

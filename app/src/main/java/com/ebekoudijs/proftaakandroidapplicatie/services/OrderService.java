@@ -15,7 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderService extends ApiWrapper implements IOrderService {
+
     private static final String TAG = "OrderService";
+
     public List<Product> getDrinks() {
         try{
             HttpURLConnection conn = apiConnect(GET, "getdrinks");
@@ -34,20 +36,19 @@ public class OrderService extends ApiWrapper implements IOrderService {
             in.close();
 
             conn.disconnect();
+
             Type type = new TypeToken<ArrayList<Product>>(){}.getType();
             List<Product> products = gson.<ArrayList<Product>>fromJson(content.toString(), type);
             Log.d(TAG, products.toString());
             String json = gson.toJson(products);
             Log.d(TAG, json);
-            Product producteen = products.get(0);
-            Log.d(TAG, producteen.name);
-            return products;
 
+            return products;
         }
         catch (Exception e) {
-
             Log.e(TAG, "getDrinks: ", e);
             return null;
         }
     }
+
 }

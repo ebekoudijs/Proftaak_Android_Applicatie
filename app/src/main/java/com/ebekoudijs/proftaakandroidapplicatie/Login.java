@@ -70,14 +70,8 @@ public class Login extends AppCompatActivity {
                     else {
                         Toast.makeText(getApplicationContext(), "Login NOT successful!", Toast.LENGTH_LONG).show();
                     }
-
-
                 });
-
             }
         });
-
     }
-
-
 }

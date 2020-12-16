@@ -32,15 +32,8 @@ public class MainActivity extends AppCompatActivity {
         EditText EditTextPhoneNumber = findViewById(R.id.editTextPhoneNumber);
         Button Submit = findViewById(R.id.buttonCreate);
         Button ToLogin = findViewById(R.id.buttonToLogin);
-        Button ToOrder = findViewById(R.id.buttonToOrder);
 
-        ToOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, Order.class);
-                startActivity(i);
-            }
-        });
+
 
         Submit.setOnClickListener(new View.OnClickListener() {
             @Override
