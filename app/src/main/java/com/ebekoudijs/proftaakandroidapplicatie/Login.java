@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,13 +11,6 @@ import android.widget.Toast;
 
 import com.ebekoudijs.proftaakandroidapplicatie.services.IUserService;
 import com.ebekoudijs.proftaakandroidapplicatie.services.UserService;
-import com.google.gson.Gson;
-
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 public class Login extends AppCompatActivity {
     private static final String TAG = "Login";
@@ -43,7 +35,7 @@ public class Login extends AppCompatActivity {
         ToOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Login.this, Order.class);
+                Intent i = new Intent(Login.this, OrderActivity.class);
                 startActivity(i);
             }
         });
@@ -59,12 +51,12 @@ public class Login extends AppCompatActivity {
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                User user = new User(EditTextLoginUser.getText().toString(), EditTextLoginPass.getText().toString(), null);
+                User user = new User(EditTextLoginUser.getText().toString(), EditTextLoginPass.getText().toString());
 
                 TaskRunner.executeAsync(() -> userService.getUser(user.Username, user.Password), (result)-> {
                     if (result.isPresent()){
                         Toast.makeText(getApplicationContext(), "Credentials sent successfully!", Toast.LENGTH_LONG).show();
-                        Intent i = new Intent(Login.this, Order.class);
+                        Intent i = new Intent(Login.this, OrderActivity.class);
                         startActivity(i);
                     }
                     else {

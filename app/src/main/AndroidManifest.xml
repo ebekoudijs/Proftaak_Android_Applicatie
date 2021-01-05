@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProftaakAndroidApplicatie">
         <activity android:name=".Login" />
-        <activity android:name=".Order" />
+        <activity android:name=".OrderActivity" />
 
 
 

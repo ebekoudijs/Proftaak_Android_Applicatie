@@ -5,7 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,6 +18,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public RecyclerViewAdapter(List<Product> products) {
         this.products = products;
         viewHolders = new ViewHolder[products.size()];
+
     }
 
     // Create new views (invoked by the layout manager)
@@ -34,10 +34,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        viewHolders[position] = viewHolder;
+
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
         viewHolder.getTextView().setText(products.get(position).name);
+
+
+        viewHolder.drinkId = products.get(position).productId;
 
         viewHolder.buttonPlus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +60,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             }
         });
 
+        viewHolders[position] = viewHolder;
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -65,12 +69,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return products.size();
     }
 
+
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
         private final Button buttonPlus, buttonMin;
         private final TextView textViewDrinkAmount;
         private int drinkAmount = 0;
-        public String fullOrder;
+        private int drinkId;
+        public static String fullOrder;
 
         public ViewHolder(View view) {
             super(view);
@@ -79,15 +86,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             buttonPlus = view.findViewById(R.id.buttonPlus);
             buttonMin = view.findViewById(R.id.buttonMinus);
             textViewDrinkAmount = view.findViewById(R.id.textViewDrinkAmount);
-
+            fullOrder = textViewDrinkAmount.toString() + " " + textView.toString();
         }
 
         public TextView getTextView() {
             return textView;
         }
 
-        public String getFullOrder (){
-            return textView.getText() + " " + textViewDrinkAmount.getText();
+        public int getDrinkId() {
+            return drinkId;
+        }
+
+        public int getDrinkAmount() {
+            return drinkAmount;
         }
     }
 }

@@ -39,7 +39,6 @@ public class UserService extends ApiWrapper implements IUserService {
 
                 return gson.fromJson(content.toString(), User.class);
             } catch (Exception e) {
-                //Log.e(TAG, "loginUser: ", e);
                 e.printStackTrace();
                 return(null);
             }

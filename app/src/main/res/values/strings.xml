@@ -7,4 +7,10 @@
     -->
     <string name="hello_world">Hello Square World!</string>
     <string name="title_activity_login">Login</string>
+
+    <string-array name="Genders">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+    </string-array>
 </resources>

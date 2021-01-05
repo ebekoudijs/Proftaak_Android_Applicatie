@@ -7,5 +7,5 @@ public class Product {
     public int stock;
     public double amountCl;
     public String description;
-    public int orderAmount;
+    public int productId;
 }

@@ -4,10 +4,12 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.ebekoudijs.proftaakandroidapplicatie.Product;
+import com.ebekoudijs.proftaakandroidapplicatie.User;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
@@ -51,4 +53,39 @@ public class OrderService extends ApiWrapper implements IOrderService {
         }
     }
 
+    public Order addOrder(Order order) {
+        try {
+            HttpURLConnection conn = apiConnect(POST, "addorder");
+
+            Gson gson = new Gson();
+            String json = gson.toJson(order);
+            Log.i("JSON", json);
+
+            String usernamePassword = "Hetti" + ":" + "Oj1dhwRpk";
+            String base64 = new String(Base64.encode(usernamePassword.getBytes(), Base64.DEFAULT));
+            conn.addRequestProperty("Authorization", "Basic " + base64);
+
+            DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+            os.writeBytes(json);
+            os.flush();
+            os.close();
+
+            Log.i("STATUS", String.valueOf(conn.getResponseCode()));
+            Log.i("MSG", conn.getResponseMessage());
+
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(conn.getInputStream()));
+            String inputLine;
+            StringBuilder content = new StringBuilder();
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            in.close();
+            conn.disconnect();
+            return gson.fromJson(content.toString(), Order.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
