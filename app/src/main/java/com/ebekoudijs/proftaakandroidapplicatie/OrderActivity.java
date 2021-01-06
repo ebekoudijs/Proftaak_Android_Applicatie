@@ -9,17 +9,23 @@ import com.ebekoudijs.proftaakandroidapplicatie.services.OrderService;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class OrderActivity extends AppCompatActivity {
 
+    private static final String TAG = "yeet";
     IOrderService orderService = new OrderService();
-    private static final String TAG = "Order";
-
+    EditText message;
+    EditText tableNumber;
+    Button buttonOrder;
+    RecyclerView recyclerDrinks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,16 +33,24 @@ public class OrderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
 
+        message = findViewById(R.id.editTextMessage);
+        tableNumber = findViewById(R.id.editTextTable);
+        buttonOrder = findViewById(R.id.buttonOrder);
+        recyclerDrinks = findViewById(R.id.RecyclerDrinks);
+
+
+        //populating recyclerView
         TaskRunner.executeAsync(() -> orderService.getDrinks(), (result) -> {
             if (result.isPresent()) {
-                RecyclerView RecyclerDrinks = findViewById(R.id.RecyclerDrinks);
+                RecyclerView RecyclerDrinks = recyclerDrinks;
 
                 RecyclerDrinks.setAdapter(new RecyclerViewAdapter(result.get()));
 
                 RecyclerDrinks.setLayoutManager(new LinearLayoutManager(this));
             }
         });
-        Button buttonOrder = findViewById(R.id.buttonOrder);
+
+        //order button
         buttonOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,19 +67,17 @@ public class OrderActivity extends AppCompatActivity {
         });
     }
 
+        //getting full order (message, tableNumber, productLines)
         public Order getOrder(){
-        ArrayList<ProductLine> productLines = new ArrayList<ProductLine>();
+        ArrayList<ProductLine> productLines = new ArrayList<>();
 
-            RecyclerView RecyclerDrinks = findViewById(R.id.RecyclerDrinks);
-
-            RecyclerViewAdapter adapter = (RecyclerViewAdapter) RecyclerDrinks.getAdapter();
+            RecyclerViewAdapter adapter = (RecyclerViewAdapter) recyclerDrinks.getAdapter();
             for (int i = 0; i < adapter.getItemCount(); i++) {
                 RecyclerViewAdapter.ViewHolder holder = adapter.viewHolders[i];
                 ProductLine productLine = new ProductLine(holder.getDrinkId(), holder.getDrinkAmount());
                 productLines.add(productLine);
             }
 
-            Order order = new Order("Groetjes van Piet Paulusma!1!", null, 3, productLines);
-            return order;
+            return new Order(message.getText().toString(), Integer.parseInt(tableNumber.getText().toString()), productLines);
         }
     }

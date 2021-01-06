@@ -3,6 +3,7 @@ package com.ebekoudijs.proftaakandroidapplicatie.services;
 import android.util.Base64;
 import android.util.Log;
 
+import com.ebekoudijs.proftaakandroidapplicatie.Login;
 import com.ebekoudijs.proftaakandroidapplicatie.Product;
 import com.ebekoudijs.proftaakandroidapplicatie.User;
 import com.google.gson.Gson;
@@ -61,7 +62,8 @@ public class OrderService extends ApiWrapper implements IOrderService {
             String json = gson.toJson(order);
             Log.i("JSON", json);
 
-            String usernamePassword = "Hetti" + ":" + "Oj1dhwRpk";
+            User user = Login.loggedUser;
+            String usernamePassword = user.Username + ":" + user.Password;
             String base64 = new String(Base64.encode(usernamePassword.getBytes(), Base64.DEFAULT));
             conn.addRequestProperty("Authorization", "Basic " + base64);
 

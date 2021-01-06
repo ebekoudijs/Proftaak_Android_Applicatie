@@ -35,14 +35,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Button ToLogin = findViewById(R.id.buttonToLogin);
         Spinner spinner = findViewById(R.id.spinnerGender);
 
-
+        //array for dropdown menu of genders
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.Genders, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
 
 
-
+        //create user button
         Submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
+        //button to login page
         ToLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         });
     }
 
+    //dropdown menu
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         spinnerContent = parent.getItemAtPosition(position).toString();

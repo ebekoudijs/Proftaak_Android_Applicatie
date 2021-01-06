@@ -13,11 +13,8 @@ import com.ebekoudijs.proftaakandroidapplicatie.services.IUserService;
 import com.ebekoudijs.proftaakandroidapplicatie.services.UserService;
 
 public class Login extends AppCompatActivity {
-    private static final String TAG = "Login";
 
-    public String ipAddress(String address) {
-        return "145.93.128.113:5000/aapie/" + address;
-    }
+    public static User loggedUser;
     IUserService userService = new UserService();
 
     @Override
@@ -25,14 +22,15 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Button ToCreateAccount = findViewById(R.id.buttonToCreateAccount);
-        Button Login = findViewById(R.id.buttonLogin);
-        Button ToOrder = findViewById(R.id.buttonToOrder);
-        EditText EditTextLoginUser = findViewById(R.id.editTextLoginUsername);
-        EditText EditTextLoginPass = findViewById(R.id.editTextLoginPassword);
+        Button toCreateAccount = findViewById(R.id.buttonToCreateAccount);
+        Button login = findViewById(R.id.buttonLogin);
+        Button toOrder = findViewById(R.id.buttonToOrder);
+        EditText email = findViewById(R.id.editTextLoginEmail);
+        EditText password = findViewById(R.id.editTextLoginPassword);
 
 
-        ToOrder.setOnClickListener(new View.OnClickListener() {
+        //temporary button to order
+        toOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Login.this, OrderActivity.class);
@@ -40,7 +38,9 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        ToCreateAccount.setOnClickListener(new View.OnClickListener() {
+
+        //back to account creation button
+        toCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Login.this, MainActivity.class);
@@ -48,13 +48,15 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        Login.setOnClickListener(new View.OnClickListener() {
+        //login button
+        login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                User user = new User(EditTextLoginUser.getText().toString(), EditTextLoginPass.getText().toString());
+                User user = new User(email.getText().toString(), password.getText().toString());
 
                 TaskRunner.executeAsync(() -> userService.getUser(user.Username, user.Password), (result)-> {
                     if (result.isPresent()){
+                        loggedUser = result.get();
                         Toast.makeText(getApplicationContext(), "Credentials sent successfully!", Toast.LENGTH_LONG).show();
                         Intent i = new Intent(Login.this, OrderActivity.class);
                         startActivity(i);
