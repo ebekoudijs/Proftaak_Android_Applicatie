@@ -6,5 +6,5 @@ import java.net.HttpURLConnection;
 
 public interface IUserService {
     User createUser(User user);
-    User getUser(String userName, String password);
+    User getUser(String email, String password);
 }

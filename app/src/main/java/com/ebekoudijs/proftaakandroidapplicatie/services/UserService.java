@@ -14,13 +14,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class UserService extends ApiWrapper implements IUserService {
+    private static final String TAG = "UserService";
 
     @Override
-    public User getUser(String userName, String password) {
+    public User getUser(String email, String password) {
             try {
-                String usernamePassword = userName + ":" + password;
+                String emailPassword = email + ":" + password;
                 HttpURLConnection conn = apiConnect(GET, "getuser");
-                String base64 = new String(Base64.encode(usernamePassword.getBytes(), Base64.DEFAULT));
+                String base64 = new String(Base64.encode(emailPassword.getBytes(), Base64.DEFAULT));
                 conn.addRequestProperty("Authorization", "Basic " + base64);
 
                 Log.i("STATUS" , String.valueOf(conn.getResponseCode()));
@@ -37,6 +38,7 @@ public class UserService extends ApiWrapper implements IUserService {
                 in.close();
                 conn.disconnect();
 
+                Log.d(TAG, "getUser: " + content.toString());
                 return gson.fromJson(content.toString(), User.class);
             } catch (Exception e) {
                 e.printStackTrace();

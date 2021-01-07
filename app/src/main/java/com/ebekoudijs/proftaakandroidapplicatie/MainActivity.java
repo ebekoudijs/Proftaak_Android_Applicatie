@@ -26,8 +26,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_main);
         IUserService userService = new UserService();
 
-
-        EditText editTextUsername = findViewById(R.id.editTextUsername);
+        EditText editTextName = findViewById(R.id.editTextName);
         EditText editTextPassword = findViewById(R.id.editTextPassword);
         EditText editTextEmail = findViewById(R.id.editTextEmail);
         EditText editTextAge = findViewById(R.id.editTextAge);
@@ -47,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onClick(View v) {
 
-                User user = new User(editTextUsername.getText().toString(), editTextPassword.getText().toString(), editTextEmail.getText().toString(),
+                User user = new User(editTextName.getText().toString(),editTextPassword.getText().toString(), editTextEmail.getText().toString(),
                         Integer.parseInt(editTextAge.getText().toString()), spinnerContent);
                 TaskRunner.executeAsync(() -> userService.createUser(user), (result)-> {
                     if (result.isPresent()){

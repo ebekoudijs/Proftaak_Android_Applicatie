@@ -24,19 +24,8 @@ public class Login extends AppCompatActivity {
 
         Button toCreateAccount = findViewById(R.id.buttonToCreateAccount);
         Button login = findViewById(R.id.buttonLogin);
-        Button toOrder = findViewById(R.id.buttonToOrder);
         EditText email = findViewById(R.id.editTextLoginEmail);
         EditText password = findViewById(R.id.editTextLoginPassword);
-
-
-        //temporary button to order
-        toOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(Login.this, OrderActivity.class);
-                startActivity(i);
-            }
-        });
 
 
         //back to account creation button
@@ -54,9 +43,9 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                 User user = new User(email.getText().toString(), password.getText().toString());
 
-                TaskRunner.executeAsync(() -> userService.getUser(user.Username, user.Password), (result)-> {
+                TaskRunner.executeAsync(() -> userService.getUser(user.email, user.password), (result)-> {
                     if (result.isPresent()){
-                        loggedUser = result.get();
+                        loggedUser = user;
                         Toast.makeText(getApplicationContext(), "Credentials sent successfully!", Toast.LENGTH_LONG).show();
                         Intent i = new Intent(Login.this, OrderActivity.class);
                         startActivity(i);

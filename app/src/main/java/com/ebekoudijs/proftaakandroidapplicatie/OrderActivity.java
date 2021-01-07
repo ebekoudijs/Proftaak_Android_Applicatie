@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class OrderActivity extends AppCompatActivity {
 
-    private static final String TAG = "yeet";
+    private static final String TAG = "OrderActivity";
     IOrderService orderService = new OrderService();
     EditText message;
     EditText tableNumber;
@@ -32,6 +32,8 @@ public class OrderActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
+
+        Log.d(TAG, "onClick: " + Login.loggedUser.toString());
 
         message = findViewById(R.id.editTextMessage);
         tableNumber = findViewById(R.id.editTextTable);
@@ -57,7 +59,7 @@ public class OrderActivity extends AppCompatActivity {
                 Order  order = getOrder();
                 TaskRunner.executeAsync(() -> orderService.addOrder(order), (result)-> {
                     if (result.isPresent()){
-                        Toast.makeText(getApplicationContext(), "Order sent successfully.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Order sent successfully!", Toast.LENGTH_LONG).show();
                     }
                     else {
                         Toast.makeText(getApplicationContext(), "Order NOT sent successfully!", Toast.LENGTH_LONG).show();

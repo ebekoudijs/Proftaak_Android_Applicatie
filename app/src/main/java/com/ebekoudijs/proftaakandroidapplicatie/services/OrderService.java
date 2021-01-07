@@ -63,8 +63,8 @@ public class OrderService extends ApiWrapper implements IOrderService {
             Log.i("JSON", json);
 
             User user = Login.loggedUser;
-            String usernamePassword = user.Username + ":" + user.Password;
-            String base64 = new String(Base64.encode(usernamePassword.getBytes(), Base64.DEFAULT));
+            String emailPassword = user.email + ":" + user.password;
+            String base64 = new String(Base64.encode(emailPassword.getBytes(), Base64.DEFAULT));
             conn.addRequestProperty("Authorization", "Basic " + base64);
 
             DataOutputStream os = new DataOutputStream(conn.getOutputStream());
